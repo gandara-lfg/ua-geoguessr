@@ -5,6 +5,10 @@ let guessMarker = null
 let answerMarker = null
 let answerPos = { lat: 32.231868, lng: -110.954454 }
 
+const locations = {
+    "OldMain": { lat: 32.231868, lng: -110.954454 }
+}
+
 function initMaps() {
 
     window.addEventListener(
@@ -39,6 +43,8 @@ function initMaps() {
     confirmButton.addEventListener("click", () => {
         handleConfirmClick()
     })
+
+    const recenterButton = document.getElementById("recenterButton")
 }
 
 
@@ -46,9 +52,9 @@ function loadMaps(){
 
     const screenDiv = document.getElementById("screen")
     const panOptions = {
-    position: answerPos,
-    clickToGo: false,
-    disableDefaultUI: true
+        position: answerPos,
+        clickToGo: false,
+        disableDefaultUI: true
     }
 
     const mapDiv = document.getElementById("map")
@@ -105,9 +111,30 @@ function expandMapFullScreen(){
     document.getElementById("map").classList.add("map-fullscreen")
 }
 
+function showScore(score){
+    const scoreDisplay = document.getElementById("scoreDisplay")
+    scoreDisplay.innerHTML = `<span class="scoreValue">${score}</span><span class="scoreLabel">points</span>`
+    scoreDisplay.style.display = "block"
+}
+
+function calculatePoints(){
+    const maxScore = 1000
+    const scale = 500
+    const distanceInMeters = google.maps.geometry.spherical.computeDistanceBetween(
+        currentGuess,
+        answerPos
+    )
+    let score = maxScore * Math.exp(-distanceInMeters / scale)
+    if (score >= 990) {score = 1000}
+    return Math.round(score)
+    
+}
+
 function handleConfirmClick(){
 
     expandMapFullScreen()
+    const score = calculatePoints()
+    showScore(score)
 
     const ansImage = document.createElement("img")
         ansImage.src = "blacklogo.png"
@@ -132,7 +159,4 @@ function handleConfirmClick(){
         strokeWeight: 4,
         map: map,
     })
-
-    
-
 }

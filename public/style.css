@@ -118,6 +118,86 @@ body {
     z-index: 15;
 }
 
+#scoreDisplay {
+    display: none;
+    position: absolute;
+    top: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 16;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    text-align: center;
+    animation: scorePop 0.4s ease-out;
+}
+
+#scoreDisplay .scoreValue {
+    display: block;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: #f4f6fb;
+    text-shadow: 0 2px 16px rgba(0, 0, 0, 0.6), 0 0 40px rgba(171, 5, 32, 0.5);
+}
+
+#scoreDisplay .scoreLabel {
+    display: block;
+    margin-top: 4px;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #e0333f;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+@keyframes scorePop {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-12px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0) scale(1);
+    }
+}
+
+#recenterButton {
+    position: absolute;
+    bottom: calc(20vh + 40px);
+    right: 30px;
+    z-index: 11;
+    padding: 8px 18px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: #f4f6fb;
+    background: rgba(12, 35, 75, 0.55);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(244, 246, 251, 0.25);
+    border-radius: 999px;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    transition: transform 0.15s ease-out, background 0.15s ease-out, box-shadow 0.15s ease-out, bottom 0.2s ease-out;
+}
+
+#map:hover:not(.map-fullscreen) ~ #recenterButton {
+    bottom: calc(34vh + 40px);
+}
+
+#recenterButton:hover {
+    background: rgba(12, 35, 75, 0.75);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+}
+
+#recenterButton:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
 #confirmButton {
     display: none;
     position: absolute;
