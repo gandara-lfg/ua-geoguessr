@@ -2,6 +2,8 @@ let panorama
 let map
 let currentGuess = null
 let guessMarker = null
+let answerMarker = null
+let answerPos = { lat: 32.231868, lng: -110.954454 }
 
 function initMaps() {
 
@@ -32,13 +34,19 @@ function initMaps() {
         document.getElementById("fullMapScreen").style.display = "block"
         loadMaps()
     })
+
+    const confirmButton = document.getElementById("confirmButton")
+    confirmButton.addEventListener("click", () => {
+        handleConfirmClick()
+    })
 }
+
 
 function loadMaps(){
 
     const screenDiv = document.getElementById("screen")
     const panOptions = {
-    position: { lat: 32.231868, lng: -110.954454 },
+    position: answerPos,
     clickToGo: false,
     disableDefaultUI: true
     }
@@ -76,10 +84,12 @@ function loadMaps(){
 
 function handleMapClicks(pos){
     if (guessMarker == null) {
+
         const pinImage = document.createElement("img")
         pinImage.src = "Arizona-Wildcats-logo.png"
         pinImage.style.width = "32px"
         pinImage.style.height = "auto"
+        document.getElementById("confirmButton").style.display = "block"
 
         guessMarker = new google.maps.marker.AdvancedMarkerElement({
         map: map,
@@ -89,4 +99,32 @@ function handleMapClicks(pos){
     else {
         guessMarker.position = pos
     }
+}
+
+function handleConfirmClick(){
+
+    const ansImage = document.createElement("img")
+        ansImage.src = "blacklogo.png"
+        ansImage.style.width = "32px"
+        ansImage.style.height = "auto"
+
+    answerMarker = new google.maps.marker.AdvancedMarkerElement({
+        map: map,
+        position: answerPos,
+        content: ansImage
+    })
+
+    const bounds = new google.maps.LatLngBounds()
+    bounds.extend(currentGuess)
+    bounds.extend(answerPos)
+    map.fitBounds(bounds)
+
+    const line = new google.maps.Polyline({
+        path: [currentGuess, answerPos],
+        geodesic: true, 
+        strokeColor: '#b40000',
+        strokeWeight: 4,
+        map: map,
+    })
+
 }

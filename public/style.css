@@ -76,4 +76,19 @@ body {
     opacity: 1;
 }
 
+#confirmButton {
+    display: none;
+    position: absolute;
+    bottom: 40px;
+    right: 40px;
+    z-index: 11;
+    padding: 8px 20px;
+    background: #16a34a;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
 
