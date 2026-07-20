@@ -101,7 +101,13 @@ function handleMapClicks(pos){
     }
 }
 
+function expandMapFullScreen(){
+    document.getElementById("map").classList.add("map-fullscreen")
+}
+
 function handleConfirmClick(){
+
+    expandMapFullScreen()
 
     const ansImage = document.createElement("img")
         ansImage.src = "blacklogo.png"
@@ -126,5 +132,7 @@ function handleConfirmClick(){
         strokeWeight: 4,
         map: map,
     })
+
+    
 
 }

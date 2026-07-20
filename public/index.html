@@ -5,12 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UAGeoGuesser</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzrqWAIRRwvAhY4JpGC8FoLD0uJB-ImR0&libraries=marker&callback=initMaps" defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzrqWAIRRwvAhY4JpGC8FoLD0uJB-ImR0&libraries=marker,geometry&callback=initMaps" defer></script>
     <script src="game.js"></script>
 </head>
 <body>
     <div id="startScreen">
-        <button id="startButton">Start</button>
+        <div id="startContent">
+            <h1 id="startTitle">U of A <span>GeoGuessr</span></h1>
+            <p id="startSubtitle">How well do you know campus?</p>
+            <button id="startButton">Start</button>
+        </div>
     </div>
     <div id="fullMapScreen">
         <div id="screen">

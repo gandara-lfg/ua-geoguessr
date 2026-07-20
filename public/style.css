@@ -17,32 +17,65 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #111;
+    background:
+        radial-gradient(circle at 50% 20%, rgba(171, 5, 32, 0.35), transparent 60%),
+        linear-gradient(160deg, #0c234b 0%, #08152f 55%, #050b1a 100%);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     z-index: 20;
 }
 
+#startContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    text-align: center;
+}
+
+#startTitle {
+    margin: 0;
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #f4f6fb;
+}
+
+#startTitle span {
+    color: #e0333f;
+}
+
+#startSubtitle {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 400;
+    color: rgba(244, 246, 251, 0.65);
+    letter-spacing: 0.01em;
+}
+
 #startButton {
+    margin-top: 12px;
     padding: 16px 48px;
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     font-weight: 600;
+    letter-spacing: 0.02em;
     color: #fff;
-    background: #2563eb;
+    background: #ab0520;
     border: none;
-    border-radius: 999px;
+    border-radius: 10px;
     cursor: pointer;
-    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+    box-shadow: 0 4px 20px rgba(171, 5, 32, 0.45);
     transition: transform 0.15s ease-out, box-shadow 0.15s ease-out, background 0.15s ease-out;
 }
 
 #startButton:hover {
-    background: #1d4ed8;
+    background: #c40626;
     transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(37, 99, 235, 0.5);
+    box-shadow: 0 6px 24px rgba(171, 5, 32, 0.55);
 }
 
 #startButton:active {
     transform: translateY(0);
-    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
+    box-shadow: 0 2px 10px rgba(171, 5, 32, 0.4);
 }
 
 #fullMapScreen {
@@ -67,13 +100,22 @@ body {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
     z-index: 10;
     opacity: 0.75;
-    transition: width 0.2s ease-out, height 0.2s ease-out, opacity 0.2s ease-out;
+    transition: width 0.2s ease-out, height 0.2s ease-out, opacity 0.2s ease-out, bottom 0.2s ease-out, right 0.2s ease-out;
 }
 
-#map:hover {
+#map:hover:not(.map-fullscreen) {
     width: 34vw;
     height: 34vh;
     opacity: 1;
+}
+
+#map.map-fullscreen {
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    z-index: 15;
 }
 
 #confirmButton {
