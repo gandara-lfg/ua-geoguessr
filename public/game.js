@@ -29,8 +29,7 @@ function initMaps() {
     const startButton = document.getElementById("startButton")
     startButton.addEventListener("click", () => {
         document.getElementById("startScreen").style.display = "none"
-        document.getElementById("screen").style.display = "block"
-        document.getElementById("map").style.display = "block"
+        document.getElementById("fullMapScreen").style.display = "block"
         loadMaps()
     })
 }
@@ -51,11 +50,20 @@ function loadMaps(){
         zoom: 14,
         minZoom: 12,
         mapId: "7e3ea53fed9dd6313e302224",
-        disableDefaultUI: true
+        disableDefaultUI: true,
+        clickableIcons: false
     }
 
     panorama = new google.maps.StreetViewPanorama(screenDiv, panOptions)
     map = new google.maps.Map(mapDiv, mapOptions)
+
+    mapDiv.addEventListener("transitionend", (event) => {
+        if (event.propertyName === "width" || event.propertyName === "height") {
+            const center = map.getCenter()
+            google.maps.event.trigger(map, "resize")
+            map.setCenter(center)
+        }
+    })
 
     map.addListener("click", (mapsMouseEvent) => {
         const clickedLocation = mapsMouseEvent.latLng
@@ -68,9 +76,15 @@ function loadMaps(){
 
 function handleMapClicks(pos){
     if (guessMarker == null) {
+        const pinImage = document.createElement("img")
+        pinImage.src = "Arizona-Wildcats-logo.png"
+        pinImage.style.width = "32px"
+        pinImage.style.height = "auto"
+
         guessMarker = new google.maps.marker.AdvancedMarkerElement({
         map: map,
         position: pos,
+        content: pinImage,
     })}
     else {
         guessMarker.position = pos

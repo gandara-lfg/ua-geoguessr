@@ -45,28 +45,35 @@ body {
     box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
 }
 
+#fullMapScreen {
+    display: none;
+    width: 100%;
+    height: 100%;
+}
+
 #screen {
     box-sizing: border-box;
     width: 100%;
-    display: none;
+    height: 100%;
 }
 
 #map {
     position: absolute;
     bottom: 30px;
     right: 30px;
-    width: 18vw;
-    height: 18vh;
+    width: 20vw;
+    height: 20vh;
     border: 2px solid #fff;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
     z-index: 10;
-    opacity: 0.6;
-    transform-origin: bottom right;
-    transition: transform 0.2s ease-out, opacity 0.2s ease-out;
-    display: none;
+    opacity: 0.75;
+    transition: width 0.2s ease-out, height 0.2s ease-out, opacity 0.2s ease-out;
 }
 
-/* #map:hover {
+#map:hover {
+    width: 34vw;
+    height: 34vh;
     opacity: 1;
-    transform: scale(1.5);
-} */
+}
+
+
