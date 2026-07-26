@@ -3,10 +3,16 @@ let map
 let currentGuess = null
 let guessMarker = null
 let answerMarker = null
-let answerPos = { lat: 32.231868, lng: -110.954454 }
+let answerPos = null
+let answerLine = null
+let pickedIndexes = []
 
-const locations = {
-    "OldMain": { lat: 32.231868, lng: -110.954454 }
+const locations = { 
+    "OldMain": { lat: 32.231879, lng: -110.954462},
+    "FoodCourt": {lat: 32.232684, lng: -110.951267 },
+    "SoftballStadium": {lat: 32.233179, lng: -110.946730 },
+    "BearDownField": {lat: 32.230442, lng: -110.948311},
+    "CochiseHall": {lat: 32.230684, lng: -110.955756 }
 }
 
 function initMaps() {
@@ -32,6 +38,8 @@ function initMaps() {
         { capture: true },
         )
 
+    
+
     const startButton = document.getElementById("startButton")
     startButton.addEventListener("click", () => {
         document.getElementById("startScreen").style.display = "none"
@@ -45,6 +53,14 @@ function initMaps() {
     })
 
     const recenterButton = document.getElementById("recenterButton")
+    recenterButton.addEventListener("click", () => {
+        map.setCenter({lat: 32.231859, lng: -110.951440})
+    })
+
+    const continueButton = document.getElementById("continueButton")
+    continueButton.addEventListener("click", () => {
+        startRound()
+    })
 }
 
 
@@ -86,6 +102,43 @@ function loadMaps(){
         handleMapClicks(currentGuess)
     })
 
+    startRound()
+}
+
+function startRound() {
+    shrinkMapFullScreen()
+    map.setCenter({lat: 32.231859, lng: -110.951440})
+    currentGuess = null
+
+    if (guessMarker != null) {
+        guessMarker.map = null
+        guessMarker = null
+    }
+
+    if (answerMarker != null) {
+        answerMarker.map = null
+        answerMarker = null
+    }
+
+    if (answerLine != null) {
+        answerLine.setMap(null)
+        answerLine = null
+    }
+
+    document.getElementById("confirmButton").style.display = "none"
+    document.getElementById("continueButton").style.display = "none"
+    document.getElementById("scoreDisplay").style.display = "none"
+
+    const locationNames = Object.keys(locations)
+    let randomNum = Math.floor(Math.random() * locationNames.length)
+    while (pickedIndexes.includes(randomNum)) {
+        randomNum = Math.floor(Math.random() * locationNames.length)
+    }
+    pickedIndexes.push(randomNum)
+    const pickedLoc = locationNames[randomNum]
+    answerPos = locations[pickedLoc]
+    panorama.setPosition(answerPos)
+
 }
 
 function handleMapClicks(pos){
@@ -109,6 +162,10 @@ function handleMapClicks(pos){
 
 function expandMapFullScreen(){
     document.getElementById("map").classList.add("map-fullscreen")
+}
+
+function shrinkMapFullScreen(){
+    document.getElementById("map").classList.remove("map-fullscreen")
 }
 
 function showScore(score){
@@ -152,11 +209,18 @@ function handleConfirmClick(){
     bounds.extend(answerPos)
     map.fitBounds(bounds)
 
-    const line = new google.maps.Polyline({
+    answerLine = new google.maps.Polyline({
         path: [currentGuess, answerPos],
-        geodesic: true, 
+        geodesic: true,
         strokeColor: '#b40000',
         strokeWeight: 4,
         map: map,
     })
+
+    document.getElementById("confirmButton").style.display = "none"
+    if (pickedIndexes.length === 5) {
+        document.getElementById("continueButton").style.display = "none"
+    } else {
+        document.getElementById("continueButton").style.display = "block"
+    }
 }

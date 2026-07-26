@@ -213,4 +213,20 @@ body {
     cursor: pointer;
 }
 
+#continueButton {
+    display: none;
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    padding: 8px 20px;
+    background: #16a34a;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
 
