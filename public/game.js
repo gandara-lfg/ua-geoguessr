@@ -6,6 +6,7 @@ let answerMarker = null
 let answerPos = null
 let answerLine = null
 let pickedIndexes = []
+let totalScore = []
 
 const locations = { 
     "OldMain": { lat: 32.231879, lng: -110.954462},
@@ -59,7 +60,11 @@ function initMaps() {
 
     const continueButton = document.getElementById("continueButton")
     continueButton.addEventListener("click", () => {
-        startRound()
+        if (pickedIndexes.length === 5) {
+            endGame()
+        } else {
+            startRound()
+        }
     })
 }
 
@@ -76,7 +81,7 @@ function loadMaps(){
     const mapDiv = document.getElementById("map")
     const mapOptions = {
         center: {lat: 32.231859, lng: -110.951440},
-        mapTypeId: "roadmap",
+        mapTypeId: "hybrid",
         zoom: 14,
         minZoom: 12,
         mapId: "7e3ea53fed9dd6313e302224",
@@ -108,6 +113,7 @@ function loadMaps(){
 function startRound() {
     shrinkMapFullScreen()
     map.setCenter({lat: 32.231859, lng: -110.951440})
+    map.setZoom(14)
     currentGuess = null
 
     if (guessMarker != null) {
@@ -139,6 +145,19 @@ function startRound() {
     answerPos = locations[pickedLoc]
     panorama.setPosition(answerPos)
 
+    updateFullScoreDisplay()
+}
+
+function updateFullScoreDisplay(){
+    const fullScoreDisplay = document.getElementById("fullScoreDisplay")
+    const roundNumber = pickedIndexes.length
+    let totalPoints = 0
+    for (const score of totalScore) {
+        totalPoints += score
+    }
+    totalPoints = Math.round(totalPoints)
+    fullScoreDisplay.innerHTML = `<span class="fullScoreValue">${totalPoints} pts</span><span class="fullScoreRound">Round ${roundNumber} / 5</span>`
+    fullScoreDisplay.style.display = "flex"
 }
 
 function handleMapClicks(pos){
@@ -183,13 +202,15 @@ function calculatePoints(){
     )
     let score = maxScore * Math.exp(-distanceInMeters / scale)
     if (score >= 990) {score = 1000}
+
+    totalScore.push(score)
     return Math.round(score)
-    
 }
 
 function handleConfirmClick(){
 
     expandMapFullScreen()
+    document.getElementById("fullScoreDisplay").style.display = "none"
     const score = calculatePoints()
     showScore(score)
 
@@ -218,9 +239,29 @@ function handleConfirmClick(){
     })
 
     document.getElementById("confirmButton").style.display = "none"
-    if (pickedIndexes.length === 5) {
-        document.getElementById("continueButton").style.display = "none"
-    } else {
-        document.getElementById("continueButton").style.display = "block"
+    document.getElementById("continueButton").style.display = "block"
+}
+
+function endGame(){
+    document.getElementById("fullMapScreen").style.display = "none"
+
+    let totalPoints = 0
+    for (const score of totalScore) {
+        totalPoints += score
     }
+    totalPoints = Math.round(totalPoints)
+
+    const endTotalScore = document.getElementById("endTotalScore")
+    endTotalScore.innerHTML = `<span class="endTotalValue">${totalPoints}</span><span class="endTotalLabel">out of 5000</span>`
+
+    const endRoundList = document.getElementById("endRoundList")
+    endRoundList.innerHTML = ""
+    totalScore.forEach((score, index) => {
+        const roundRow = document.createElement("div")
+        roundRow.className = "endRoundRow"
+        roundRow.innerHTML = `<span class="endRoundLabel">Round ${index + 1}</span><span class="endRoundScore">${Math.round(score)} pts</span>`
+        endRoundList.appendChild(roundRow)
+    })
+
+    document.getElementById("endScreen").style.display = "flex"
 }
